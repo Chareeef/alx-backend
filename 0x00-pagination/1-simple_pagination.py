@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+""" Implementation of the index_range function """
+import csv
+import math
+from typing import List, Tuple
+
+
+def index_range(page: int, page_size: int) -> Tuple[int, int]:
+    """Return a tuple containing a start index and an end index
+    corresponding to the range of indexes to return in a list
+    for those particular pagination parameters.
+
+    Note: Page numbers are 1-indexed, i.e. the first page is page 1.
+    """
+
+    # Compute the start index (remember page numbers are 1-indexed)
+    start = (page - 1) * page_size
+
+    # Compute the end index
+    end = start + page_size
+
+    # Return the index range tuple
+    return (start, end)
+
+
+class Server:
+    """Server class to paginate a database of popular baby names.
+    """
+    DATA_FILE = "Popular_Baby_Names.csv"
+
+    def __init__(self):
+        self.__dataset = None
+
+    def dataset(self) -> List[List]:
+        """Cached dataset
+        """
+        if self.__dataset is None:
+            with open(self.DATA_FILE) as f:
+                reader = csv.reader(f)
+                dataset = [row for row in reader]
+            self.__dataset = dataset[1:]
+
+        return self.__dataset
+
+    def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
+        """Use index_range to find the correct indexes to
+        paginate the dataset correctly and return the
+        appropriate page of the dataset (i.e. the correct list of rows).
+
+        If the input arguments are out of range for the dataset,
+        an empty list should be returned.
+        """
+
+        # Verify that both arguments are integers greater than 0
+        assert type(page) == int and type(page_size) == int
+        assert page > 0 and page_size > 0
+
+        # Feed dataset
+        dataset = self.dataset()
+
+        # Compute the index range
+        start, end = index_range(page, page_size)
+
+        # Return [] if the index range is out of range
+        total_pages = len(dataset)
+        # if start > total_pages or end > total_pages + 1:
+        if start > total_pages - 1:
+            return []
+
+        # Look for the appropriate page of the dataset
+        if end <= total_pages - 1:
+            page = dataset[start: end]
+        else:
+            page = dataset[start:]
+
+        # Return the page
+        return page
