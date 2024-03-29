@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """ Implementation of the Server class """
 import csv
-from typing import List, Tuple
+from math import ceil
+from typing import Any, Dict, List, Tuple
 
 
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
@@ -74,3 +75,38 @@ class Server:
 
         # Return the page
         return page
+
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict[str, Any]:
+        """Call get_page and returns a dictionary
+        containing the following key-value pairs:
+
+            page_size: the length of the returned dataset page
+            page: the current page number
+            data: the dataset page (equivalent to return from previous task)
+            next_page: number of the next page, None if no next page
+            prev_page: number of the previous page, None if no previous page
+            total_pages: the total number of pages in the dataset as an integer
+        """
+
+        # Get appropriate page
+        returned_page = self.get_page(page, page_size)
+
+        # Compute the total number of pages in tha dataset
+        total_pages = ceil(len(self.__dataset) / page_size)
+
+        # Define next and previous pages
+        next_page = page + 1 if page < total_pages - 1 else None
+        prev_page = page - 1 if page > 1 else None
+
+        # Construct the Hypermedia dictionary
+        hypermedia_dict = {
+                'page_size': len(returned_page),
+                'page': page,
+                'data': returned_page,
+                'next_page': next_page,
+                'prev_page': prev_page,
+                'total_pages': total_pages
+        }
+
+        # Return the Hypermedia dictionary
+        return hypermedia_dict
