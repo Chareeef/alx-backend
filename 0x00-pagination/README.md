@@ -1,6 +1,6 @@
 # Pagination
 
-Welcome to the Pagination Learning Project! 🚀 In this project, we'll dive into the exciting world of pagination and learn how to efficiently paginate datasets using various techniques. Pagination is a fundamental concept in software development, especially when dealing with large datasets, and mastering it will greatly enhance our skills as software engineers.
+Welcome to the Pagination Project! 🚀 In this project, we'll dive into the exciting world of pagination and learn how to efficiently paginate datasets using various techniques. Pagination is a fundamental concept in software development, especially when dealing with large datasets, and mastering it will greatly enhance our skills as software engineers. 👨‍💻👩‍💻
 
 ## Pagination Types
 
