@@ -19,8 +19,10 @@ class FIFOCache(BaseCaching):
         """ Add an item in the cache
         """
         if key and item:
-            # If the cache is full, Remove the first in element
-            if len(self.cache_data) == self.MAX_ITEMS:
+            # If the cache is full, Remove last item first
+            # if we are not updating an existent key
+            if len(self.cache_data) == self.MAX_ITEMS \
+                    and key not in self.cache_data:
                 key_to_remove = self.first_in_keys.pop()
                 self.cache_data.pop(key_to_remove)
                 print('DISCARD:', key_to_remove)
