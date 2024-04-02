@@ -30,7 +30,7 @@ class LIFOCache(BaseCaching):
             # Update cache
             self.cache_data[key] = item
 
-            # If the key was already in last_in_keys, remove it first
+            # If the key is already in last_in_keys, remove it first
             if key in self.last_in_keys:
                 self.last_in_keys.remove(key)
 

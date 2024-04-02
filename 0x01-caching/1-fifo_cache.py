@@ -30,7 +30,7 @@ class FIFOCache(BaseCaching):
             # Update cache
             self.cache_data[key] = item
 
-            # If the key was already in first_in_keys, remove it first
+            # If the key is already in first_in_keys, remove it first
             if key in self.first_in_keys:
                 self.first_in_keys.remove(key)
 

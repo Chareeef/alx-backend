@@ -31,7 +31,7 @@ class LRUCache(BaseCaching):
             # Update cache
             self.cache_data[key] = item
 
-            # If the key was already in lru_keys, remove it first
+            # If the key is already in lru_keys, remove it first
             if key in self.lru_keys:
                 self.lru_keys.remove(key)
 
