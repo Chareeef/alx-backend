@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" FIFOCache: Cache with First In First Out implementation
+""" FIFOCache: Cache with First In First Out algorithm
 """
 from base_caching import BaseCaching
 from collections import deque

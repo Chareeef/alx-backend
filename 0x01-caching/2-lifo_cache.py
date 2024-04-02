@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" LIFOCache: Cache with Last In First Out implementation
+""" LIFOCache: Cache with Last In First Out algorithm
 """
 from base_caching import BaseCaching
 from collections import deque
