@@ -16,6 +16,7 @@ class Config:
 
 # Configure the app
 app.config.from_object(Config)
+app.url_map.strict_slashes = False
 
 # Set up Babel
 babel = Babel(app)
@@ -27,7 +28,7 @@ def get_locale():
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
-@app.route('/', strict_slashes=False)
+@app.route('/')
 def index():
     """The Index route"""
     return render_template('3-index.html')
