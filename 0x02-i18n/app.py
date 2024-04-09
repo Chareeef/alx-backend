@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """A Flask application"""
+from datetime import datetime
 import flask
 from flask import Flask, render_template, request
 from flask_babel import Babel
@@ -22,11 +23,7 @@ class Config:
 app.config.from_object(Config)
 app.url_map.strict_slashes = False
 
-# Set up Babel
-babel = Babel(app)
 
-
-@babel.localeselector
 def get_locale() -> str:
     """Choose the best language to serve among the supported ones
     respecting this order of priority:
@@ -54,7 +51,6 @@ def get_locale() -> str:
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
-@babel.timezoneselector
 def get_timezone() -> str:
     """Set the timezone respecting this order of priority:
 
@@ -78,6 +74,10 @@ def get_timezone() -> str:
 
     # Default timezone: UTC
     return pytz.utc
+
+
+# Set up Babel
+babel = Babel(app, locale_selector=get_locale, timezone_selector=get_timezone)
 
 
 users = {
@@ -111,7 +111,17 @@ def before_request() -> None:
 @app.route('/')
 def index():
     """The Index route"""
-    return render_template('7-index.html', user=flask.g.user)
+    current_time = datetime.now(get_timezone())
+    locale = get_locale()
+
+    if locale == 'en':
+        current_time = current_time.strftime('%b %d, %Y, %I:%M:%S %p')
+    if locale == 'fr':
+        current_time = current_time.strftime('%d %b. %Y à %H:%M;%S')
+
+    return render_template('index.html',
+                           user=flask.g.user,
+                           current_time=current_time)
 
 
 if __name__ == '__main__':
