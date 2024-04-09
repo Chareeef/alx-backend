@@ -17,14 +17,14 @@ class Config:
 # Configure the app
 app.config.from_object(Config)
 
+# Set up Babel
+babel = Babel(app)
 
+
+@babel.localeselector
 def get_locale():
     """Choose the best language to serve among the supported ones"""
     return request.accept_languages.best_match(app.config['LANGUAGES'])
-
-
-# Set up Babel
-babel = Babel(app, locale_selector=get_locale)
 
 
 @app.route('/', strict_slashes=False)
