@@ -44,12 +44,12 @@ def get_locale() -> str:
         return flask.g.user['locale']
 
     # request header
-    best_match = request.accept_languages.best_match(app.config['LANGUAGES'])
-    if best_match:
-        return best_match
+    lang = request.headers.get('locale')
+    if lang and lang in app.config['LANGUAGES']:
+        return lang
 
     # Default locale
-    return app.config['BABEL_DEFAULT_LOCALE']
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
 users = {
