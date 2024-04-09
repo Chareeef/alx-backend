@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """A Flask application"""
-from flask import Flask, g, render_template, request
+import flask
+from flask import Flask, render_template, request
 from flask_babel import Babel
 from typing import Dict, Union
 
@@ -24,7 +25,7 @@ babel = Babel(app)
 
 
 @babel.localeselector
-def get_locale():
+def get_locale() -> str:
     """Choose the best language to serve among the supported ones
     respecting this order of priority:
 
@@ -39,8 +40,8 @@ def get_locale():
         return lang
 
     # user settings
-    if g.user:
-        return g.user['locale']
+    if flask.g.user:
+        return flask.g.user['locale']
 
     # request header
     best_match = request.accept_languages.best_match(app.config['LANGUAGES'])
@@ -76,13 +77,13 @@ def before_request() -> None:
     """Should use get_user to find a user if any,
     and set it as a global on flask.g.user
     """
-    g.user = get_user()
+    flask.g.user = get_user()
 
 
 @app.route('/')
 def index():
     """The Index route"""
-    return render_template('6-index.html', user=g.user)
+    return render_template('6-index.html', user=flask.g.user)
 
 
 if __name__ == '__main__':
