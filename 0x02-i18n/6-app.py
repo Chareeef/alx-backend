@@ -41,7 +41,9 @@ def get_locale() -> str:
 
     # user settings
     if flask.g.user:
-        return flask.g.user['locale']
+        lang = flask.g.user.get('locale')
+        if lang and lang in app.config['LANGUAGES']:
+            return lang
 
     # request header
     lang = request.headers.get('locale')
