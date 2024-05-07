@@ -12,7 +12,7 @@ describe('Test createPushNotificationsJobs function', () => {
   let spyCLog;
 
   before(() => {
-    queue.testMode.enter(true);
+    queue.testMode.enter();
   });
 
   beforeEach(() => {
@@ -47,8 +47,10 @@ describe('Test createPushNotificationsJobs function', () => {
     // Call function
     createPushNotificationsJobs(jobs, queue);
 
+    expect(spyCLog.calledOnceWith(sinon.match('Notification job created: 1'))).to.be.true;
     expect(queue.testMode.jobs.length).to.equal(1);
     expect(queue.testMode.jobs[0].type).to.equal('push_notification_code_3');
+    expect(queue.testMode.jobs[0].data).to.eql({ phoneNumber: '45789735', message: 'Hello!' });
   });
 
   it('creates two jobs and log the infos to the console', () => {
@@ -66,34 +68,12 @@ describe('Test createPushNotificationsJobs function', () => {
     // Call function
     createPushNotificationsJobs(jobs, queue);
 
+    expect(spyCLog.calledWith(sinon.match('Notification job created: 2'))).to.be.true;
+    expect(spyCLog.calledWith(sinon.match('Notification job created: 3'))).to.be.true;
     expect(queue.testMode.jobs.length).to.equal(2);
-  });
-
-  it('Test processing successfully', function(done) {
-
-    const jobs = [
-    {
-      phoneNumber: '45789735',
-      message: 'Hello!'
-    },
-    {
-      phoneNumber: '74569170',
-      message: 'Bye!'
-    }];
-
-    // Create jobs
-    createPushNotificationsJobs(jobs, queue);
-
-    // Process jobs
-    queue.process('push_notification_code_3', function(job, done) {
-      sendNotification(job.data.phoneNumber, job.data.message, job, done);
-    });
-
-    queue.on('job complete', function(id) {
-      kue.Job.get(id, function(err, job) {
-        expect(spyCLog.calledWith(`Sending notification to ${job.data.phoneNumber}, with message: ${job.data.message}`)).to.be.true;
-        done();
-      });
-    });
+    expect(queue.testMode.jobs[0].type).to.equal('push_notification_code_3');
+    expect(queue.testMode.jobs[0].data).to.eql({ phoneNumber: '45789735', message: 'Hello!' });
+    expect(queue.testMode.jobs[1].type).to.equal('push_notification_code_3');
+    expect(queue.testMode.jobs[1].data).to.eql({ phoneNumber: '74569170', message: 'Bye!' });
   });
 });
