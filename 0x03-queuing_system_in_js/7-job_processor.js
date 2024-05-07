@@ -7,7 +7,7 @@ const jobs = kue.createQueue();
 const blacklistedNums = ['4153518780', '4153518781'];
 
 // Function to process jobs and send notifications
-function sendNotification(phoneNumber, message, job, done) {
+export default function sendNotification(phoneNumber, message, job, done) {
 
   job.progress(0, 100);
 

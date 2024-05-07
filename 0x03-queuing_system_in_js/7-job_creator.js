@@ -58,7 +58,7 @@ jobs.forEach((data) => {
     .create('push_notification_code_2', data)
     .save((err) => {
       if (!err) {
-        console.log('Notification job created:', job.id);
+        console.log(`Notification job created: ${job.id}`);
       }
     });
 
